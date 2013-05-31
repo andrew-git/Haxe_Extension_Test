@@ -12,8 +12,8 @@ To use this project go to the /scripts folder and run the build script* for your
 	<haxedef name="Use_Native" />
 
 
-*The scripts are in 2 formats: .bat for windows and .sh for Mac/Linux.
+*The scripts are in 2 formats: .bat for Windows and .sh for Mac/Linux.
 
-*Note that conditional flags doe not need to be set in the .nmml file but could be set when calling the compiler by passing a -dUse_Native flag.
+*Note that conditional flags do not need to be set in the .nmml file but could be set when calling the compiler by passing a -dUse_Native flag.
 
 Copyright 2013 Erica McCowan, Abyss Games Inc
