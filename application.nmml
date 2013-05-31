@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="My_Extension_Test" package="com.abyssgames.MyExtensionTest" version="1.0.0" company="Abyss Games Inc" />
+	<meta title="Haxe_Extension_Test" package="com.abyssgames.HaxeExtensionTest" version="1.0.0" company="Abyss Games Inc" />
 	
 	<!-- output -->
-	<app main="Main" file="MyExtensionTest" path="bin" />
+	<app main="Main" file="HaxeExtensionTest" path="bin" />
 	
 	<window background="#800080" fps="60" />
 	<window width="800" height="480" unless="mobile" />
@@ -22,6 +22,7 @@
 	<assets path="assets/img" rename="img" />
 	
 	<!-- extensions -->
+	
 	<include path="native/windows" if="windows" />
 	<include path="native/windows" if="neko" />
 	<include path="native/mac" if="mac" />
@@ -31,5 +32,8 @@
 	<!-- optimize output -->
 	<haxeflag name="--dead-code-elimination" if="html5" />
 	<haxeflag name="-dce" if="haxe3" />
+	
+	<!-- custom defines -->
+	<haxedef name="Use_Native" />
 	
 </project>

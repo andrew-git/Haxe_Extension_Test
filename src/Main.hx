@@ -1,11 +1,12 @@
 package ;
 
 //{region Imports
+import nme.display.MovieClip;
 import nme.text.TextFormat;
-import nme.display.Sprite;
 import nme.events.Event;
 import nme.Lib;
 import nme.text.TextField;
+import haxe.macro.Context;
 //}endregion
 
 /**
@@ -13,14 +14,15 @@ import nme.text.TextField;
  * @author Erica McCowan
  */
 
-class Main extends Sprite 
-{ // Start main.
+class Main extends MovieClip 
+{ // Start class Main.
 	
 	var inited:Bool;
 	
 	// My fields:
 	public var didItWorkText:TextField;
 	public var osTargetText:TextField;
+	public static var Native:Dynamic;
 
 	/* ENTRY POINT */
 	
@@ -35,17 +37,12 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		// (your code here)
 		
-		// Stage:
-		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
-		
-		// Assets:
-		// nme.Assets.getBitmapData("img/assetname.jpg");
 	}
 
 	/* SETUP */
-
+	
+	//{region Constructor:
 	public function new() 
 	{
 		super();	
@@ -71,43 +68,44 @@ class Main extends Sprite
 		
 		//}endregion
 		
+		//************************************************************************
+		// Setting up the call to the native lib, Note that if you are targeting a 
+		// platform without a native dll then the Native variable will be null and 
+		// you must take that into account in your code either by commenting out the 
+		// Native calls or by wrapping them in a null check.
+		//************************************************************************
+		setNativeCall();
+		
 		//{region Calling the extension:
-		#if windows
-		if ( Windows_Native.didItWork( false ) )
-			didItWorkText.text = "Did it work? Yes it did, you sent True. Check the log output!";
-		else
-			didItWorkText.text = "Did it work? Yes it did, you sent False. Check the log output!";
-			
-		osTargetText.text = "What is the Extension target used? " + Windows_Native.whatIsTheExtensionTarget() + ". Check the log output!" ;
 		
-		#elseif mac
-		if ( Mac_Native.didItWork( false ) )
-			didItWorkText.text = "Did it work? Yes it did, you sent True. Check the log output!";
-		else
-			didItWorkText.text = "Did it work? Yes it did, you sent False. Check the log output!";
+		//*****************************************************************************
+		// Demonstrating the Native calls. There are two types of calls here, one 
+		// way and two way. Two way returns data from the Native side and one way 
+		// sends data to the native side. Note that if there is no applicable native 
+		// side I have it set to throw an error without crashing, this is very 
+		// important. Also note that you can pass a -DUseNative flag to the compiler 
+		// to disable all native calls when they are properly warped in the Conditional 
+		// Compilation flag.
+		//*****************************************************************************
+		#if Use_Native
+		if ( Native != null )
+		{ // Start if native not equal null.
 			
-		osTargetText.text = "What is the Extension target used? " + Mac_Native.whatIsTheExtensionTarget() + ". Check the log output!" ;
-		
-		#elseif ios
-		if ( IOS_Native.didItWork( false ) )
-			didItWorkText.text = "Did it work? Yes it did, you sent True. Check the log output!";
-		else
-			didItWorkText.text = "Did it work? Yes it did, you sent False. Check the log output!";
+			if ( Native.didItWork( false ) )
+				didItWorkText.text = "Did it work? Yes it did, you sent True. Check the log output!";
+			else
+				didItWorkText.text = "Did it work? Yes it did, you sent False. Check the log output!";
+				
+			osTargetText.text = "What is the Extension target used? " + Native.whatIsTheExtensionTarget() + ". Check the log output!" ;
 			
-		osTargetText.text = "What is the Extension target used? " + IOS_Native.whatIsTheExtensionTarget() + ". Check the log output!" ;
-		
-		#elseif android
-		if ( Android_Native.didItWork( false ) )
-			didItWorkText.text = "Did it work? Yes it did, you sent True. Check the log output!";
-		else
-			didItWorkText.text = "Did it work? Yes it did, you sent False. Check the log output!";
-			
-		osTargetText.text = "What is the Extension target used? " + Android_Native.whatIsTheExtensionTarget() + ". Check the log output!" ;
-		
+		} // End if native not equal null.
+		else  // Else Native is null:
+			didItWorkText.text = "There is no native extension for this platform";
 		#else
-		didItWorkText.text = "There is no native extension for this platform";
-		
+			didItWorkText.text = "Native extensions are disabled. Check the readme tile for how to enable them.";
+			
 		#end
+		
 		//}endregion
 		
 		// Adding the text to the screen:
@@ -115,6 +113,33 @@ class Main extends Sprite
 		addChild(osTargetText);
 		
 	} // End main.
+	//}endregion
+	
+	//{region Set Native Call
+	function setNativeCall( ) : Void
+	{ // Start setNativeCall.
+		
+		//{region Calling the extension:
+		#if windows
+		Native = Windows_Native;
+		
+		#elseif mac
+		Native = Mac_Native;
+		
+		#elseif ios
+		Native = IOS_Native;
+		
+		#elseif android
+		Native = Android_Native;
+		
+		#else
+		Native = null;
+		
+		#end
+		//}endregion
+		
+	} // End // Start setNativeCall.
+	//} End Region
 
 	function added(e) 
 	{
@@ -136,4 +161,4 @@ class Main extends Sprite
 		
 	}
 	
-}
+} // End class Main.
