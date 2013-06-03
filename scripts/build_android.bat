@@ -1,4 +1,9 @@
 cls
+REM This file is provided as an example only.
+REM All contents in this file and its accompanying project
+REM are Copyright Erica McCowan and Abyss Games Inc.
+REM http://www.ericamccowan.com
+REM
 cd ..
 REM Changing into the Extensions Directory:
 cd Native\android\project\
